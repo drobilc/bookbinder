@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from downloaders.downloader import Downloader
 from downloaders.ebook import Ebook
 import time
+import logging
 
 from downloaders.exceptions import *
 
@@ -87,7 +88,10 @@ class FanfictionDownloader(Downloader):
         # Cloudfare DDOS protection.
         self.driver = uc.Chrome()
 
+        logging.info(f'Story download started')
+
         story_metadata = self.get_metadata()
+        logging.info(f'Downloaded story meta data')
 
         parts = []
 
@@ -97,13 +101,17 @@ class FanfictionDownloader(Downloader):
             try:
                 html = self.get_page(current_page)
                 parts.append(html)
+                logging.info(f'Downloaded chapter {current_page}')
                 time.sleep(self.wait_between_requests)
             except ChapterDoesNotExistException:
                 # We have reached the end of the book. Break the infinite loop and
                 # convert downloaded chapters into an ebook.
+                logging.info(f'No more chapters available')
                 break
 
             current_page += 1
+        
+        logging.info(f'Story download ended')
         
         return Ebook(
             metadata=story_metadata,
