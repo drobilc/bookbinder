@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions
 from bs4 import BeautifulSoup
 from downloaders.downloader import Downloader
 from downloaders.ebook import Ebook
+import time
 
 from downloaders.exceptions import *
 
@@ -18,7 +19,15 @@ class FanfictionDownloader(Downloader):
             type=int,
             default=120,
             dest="page_load_timeout",
-            help='How much time the downloader should wait for fanfiction.net server to respond.',
+            help='How many seconds the downloader should wait for fanfiction.net server to respond.',
+        )
+
+        parser.add_argument(
+            "--wait-between-requests",
+            type=int,
+            default=5,
+            dest="wait_between_requests",
+            help='How many seconds the downloader should wait before downloading the next chapter. If this value is set too low, the Cloudfare DDOS protection might display captcha.',
         )
     
     def get_metadata(self):
@@ -72,6 +81,7 @@ class FanfictionDownloader(Downloader):
     def download(self, arguments):
         self.story_id = arguments.story_id
         self.page_load_timeout = arguments.page_load_timeout
+        self.wait_between_requests = arguments.wait_between_requests
         
         # Construct a new undetected chrome driver that we will use to surpass
         # Cloudfare DDOS protection.
@@ -87,6 +97,7 @@ class FanfictionDownloader(Downloader):
             try:
                 html = self.get_page(current_page)
                 parts.append(html)
+                time.sleep(self.wait_between_requests)
             except ChapterDoesNotExistException:
                 # We have reached the end of the book. Break the infinite loop and
                 # convert downloaded chapters into an ebook.
