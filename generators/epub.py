@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from ebooklib import epub
+import logging
 
 from generators.generator import Generator
 
@@ -14,6 +15,7 @@ class EpubGenerator(Generator):
         )
     
     def generate(self, arguments, ebook):
+        logging.info(f'Epub generation started')
         # Create new epub book
         book = epub.EpubBook()
 
@@ -48,3 +50,5 @@ class EpubGenerator(Generator):
 
         # Write the file to disk
         epub.write_epub(arguments.output_file, book, {})
+        logging.info(f'Epub generation ended')
+        logging.info(f'Output file path: {arguments.output_file}')
