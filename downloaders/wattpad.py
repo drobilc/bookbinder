@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from downloaders.downloader import Downloader
 from downloaders.ebook import Ebook
 import time
+import logging
 
 from downloaders.exceptions import *
 
@@ -99,19 +100,22 @@ class WattpadDownloader(Downloader):
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36',
         })
 
+        logging.info(f'Story download started')
+
         story_metadata, story_chapters = self.get_metadata()
-        
+        logging.info(f'Downloaded story meta data')
 
         parts = []
         for chapter_link in story_chapters:
             try:
                 html = self.get_page(chapter_link)
                 parts.append(html)
+                logging.info(f'Downloaded chapter {chapter_link}')
                 time.sleep(self.wait_between_requests)
-            except ChapterDoesNotExistException:
-                # We have reached the end of the book. Break the infinite loop and
-                # convert downloaded chapters into an ebook.
-                break
+            except Exception:
+                logging.exception('Could not download chapter')
+        
+        logging.info(f'Story download ended')
 
         return Ebook(
             metadata=story_metadata,
