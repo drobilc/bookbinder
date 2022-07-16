@@ -2,6 +2,7 @@ import argparse
 from downloaders import DOWNLOADERS
 from generators import GENERATORS
 from transformations import TRANSFORMATIONS
+import logging
 
 if __name__ == '__main__':
 
@@ -15,7 +16,19 @@ if __name__ == '__main__':
             dest=transformation.COMMAND_DESTINATION,
             action='store_true',
         )
+    parser.add_argument(
+        '--verbose',
+        action='store_true',
+        help='If set, the ebook generator will output DEBUG information'
+    )
     arguments, other_arguments = parser.parse_known_args()
+
+    logging_level = logging.DEBUG if arguments.verbose else logging.INFO
+    logging.basicConfig(
+        level=logging_level,
+        format='%(asctime)s %(levelname)s %(threadName)s: %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S',
+    )
 
     # Parse additional arguments for downloader.
     downloader_argument_parser = argparse.ArgumentParser()
