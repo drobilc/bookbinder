@@ -26,7 +26,6 @@ class JSONGenerator(Generator):
             'authors': book.authors if hasattr(book, 'authors') else None,
             'description': book.description if hasattr(book, 'description') else None,
             'chapters': [self.generate_chapter(chapter) for chapter in book.chapters],
-
         }
     
     def generate(self, arguments, ebook):
