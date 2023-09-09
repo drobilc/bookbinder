@@ -4,7 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from bs4 import BeautifulSoup
 from downloaders.downloader import Downloader
-from downloaders.ebook import Ebook
+from downloaders.ebook import Ebook, Chapter
 import time
 import logging
 
@@ -59,7 +59,7 @@ class FanfictionDownloader(Downloader):
             "description": metadata_container.find_all('div', {'class': 'xcontrast_txt'})[0].text.strip()
         }
     
-    def get_page(self, page):
+    def get_chapter(self, page):
         self.driver.get(f'https://www.fanfiction.net/s/{self.story_id}/{page}/')
         _ = WebDriverWait(self.driver, timeout=self.page_load_timeout).until(
             expected_conditions.any_of(
@@ -77,8 +77,31 @@ class FanfictionDownloader(Downloader):
         if story_container is None:
             raise ChapterDoesNotExistException
         
-        return str(story_container)
+        # Get the title of the current chapter
+        chapter_selector = html.find('select', {'id': 'chap_select'})
+        selected_chapter = chapter_selector.find('option', selected=True)
+        chapter_title = selected_chapter.get_text().strip()
+        
+        return Chapter(
+            title=chapter_title,
+            html=story_container.prettify(),
+        )
     
+    def configure_scraper(self):
+        # Cloudflare bypass from the following link. Might not work in the future.
+        # https://github.com/ultrafunkamsterdam/undetected-chromedriver/issues/1388#issuecomment-1632083471
+        logging.debug(f'Initializing Chromedriver to bypass Cloudflare protection')
+        first_chapter_url = f'https://www.fanfiction.net/s/{self.story_id}/1'
+        self.driver.execute_script(f'''window.open("{first_chapter_url}","_blank");''')
+        time.sleep(10)
+        self.driver.switch_to.window(window_name=self.driver.window_handles[0])
+        self.driver.close()
+        self.driver.switch_to.window(window_name=self.driver.window_handles[0])
+        time.sleep(2)
+        self.driver.get("https://google.com")
+        time.sleep(2)
+        logging.debug(f'Chromedriver initialization done')
+
     def download(self, arguments):
         self.story_id = arguments.story_id
         self.page_load_timeout = arguments.page_load_timeout
@@ -87,20 +110,20 @@ class FanfictionDownloader(Downloader):
         # Construct a new undetected chrome driver that we will use to surpass
         # Cloudfare DDOS protection.
         self.driver = uc.Chrome()
+        self.configure_scraper()
 
         logging.info(f'Story download started')
 
         story_metadata = self.get_metadata()
         logging.info(f'Downloaded story meta data')
 
-        parts = []
+        chapters = []
 
         current_page = 1
         while True:
 
             try:
-                html = self.get_page(current_page)
-                parts.append(html)
+                chapters.append(self.get_chapter(current_page))
                 logging.info(f'Downloaded chapter {current_page}')
                 time.sleep(self.wait_between_requests)
             except ChapterDoesNotExistException:
@@ -114,6 +137,9 @@ class FanfictionDownloader(Downloader):
         logging.info(f'Story download ended')
         
         return Ebook(
-            metadata=story_metadata,
-            data=parts,
+            title=story_metadata['title'],
+            id=story_metadata['id'],
+            authors=[story_metadata['author']],
+            description=story_metadata['description'],
+            chapters=chapters,
         )
