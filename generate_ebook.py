@@ -24,6 +24,7 @@ if __name__ == '__main__':
     arguments, other_arguments = parser.parse_known_args()
 
     logging_level = logging.DEBUG if arguments.verbose else logging.INFO
+    logging.root.setLevel(logging_level)
     logging.basicConfig(
         level=logging_level,
         format='%(asctime)s %(levelname)s: %(message)s',
