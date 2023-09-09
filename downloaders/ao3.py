@@ -12,7 +12,6 @@ class ArchiveOfOurOwnDownloader(Downloader):
         parser.add_argument("story_id")
     
     def parse_chapter(self, chapter_container):
-        # print(chapter_container.prettify())
         landmark = chapter_container.find('h3', {'id': 'work'})
         chapter_text = landmark.parent
 
@@ -21,9 +20,10 @@ class ArchiveOfOurOwnDownloader(Downloader):
         landmark.extract()
 
         title_container = chapter_container.find('h3', {'class': 'title'})
+        title = title_container.get_text().strip() if title_container is not None else ''
         
         return Chapter(
-            title=title_container.get_text().strip(),
+            title=title,
             html=chapter_text.prettify(),
         )
     
@@ -46,7 +46,10 @@ class ArchiveOfOurOwnDownloader(Downloader):
     def extract_chapters(self, html):
         chapter_container = html.find('div', {'id': 'chapters'})
         chapter_elements = chapter_container.find_all('div', {'class': 'chapter'}, recursive=False)
-        
+
+        if len(chapter_elements) < 1:
+            chapter_elements = [ chapter_container ]
+            
         logging.info(f'Found {len(chapter_elements)} chapters')
         
         chapters = []
