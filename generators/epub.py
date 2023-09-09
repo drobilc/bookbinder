@@ -20,19 +20,23 @@ class EpubGenerator(Generator):
         book = epub.EpubBook()
 
         # Set the book metadata
-        book.set_identifier(str(ebook.metadata.get('story_id', 0)))
-        book.set_title(ebook.metadata.get('title', 'Unknown'))
-        book.set_language(ebook.metadata.get('language', 'en'))
+        book.set_identifier(str(ebook.id))
+        book.set_title(ebook.title)
+        book.set_language(ebook.language)
 
         # Add the book author(s?)
-        book.add_author(ebook.metadata.get('author', 'Unknown'))
+        for author in ebook.authors:
+            book.add_author(author)
 
         chapters = []
-        for i, part in enumerate(ebook.data):
-            # Create a new chapter and name it Chapter i
-            chapter = epub.EpubHtml(title=f'Chapter {i + 1}', file_name=f'chapter{i+1}.xhtml', lang='en')
-            html = BeautifulSoup(part, 'html5lib')
-            chapter.content = html.prettify()
+        for i, chapter_data in enumerate(ebook.chapters):
+            # Create a new chapter
+            chapter = epub.EpubHtml(
+                title=chapter_data.title,
+                file_name=f'chapter{i+1}.xhtml',
+                lang=book.language,
+            )
+            chapter.content = chapter_data.html
             
             # Add the chapter to the book
             book.add_item(chapter)
