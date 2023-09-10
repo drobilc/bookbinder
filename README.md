@@ -89,17 +89,24 @@ python3 generate_ebook.py ao3 epub 304382 --output-file ao3_304382.epub
 
 #### Epub file format destination
 
+Bookbinder supports the generation of an **epub** file format from downloaded sources. This file format is compatible with almost all ebook readers. The generated ebook includes a summary page with the title, author, and description, as well as an index and all downloaded chapters.
+
+| Flag | Description | Default value |
+| ---- | ----------- | ------------- |
+| `--output-file` | Output file destination. | `book.epub` |
+
 #### Audiobook
 
 Bookbinder is able to create an audiobook using the [TTS](https://pypi.org/project/TTS/) text-to-speech and [pydub](https://pypi.org/project/pydub/) audio manipulation libraries. It supports choosing a text-to-speech generation model using the `--tts-model` flag. The text-to-speech speaker can be changed using the `--tts-speaker` flag. More information about TTS models and speakers can be found in the [TTS library documentation](https://tts.readthedocs.io/en/latest/index.html).
-
-| Flag | Default value |
-| ---- | ------------- |
-| `--tts-model` | `tts_models/en/vctk/vits` |
-| `--tts-speaker` | `p238` |
 
 To create an audiobook `audiobook.wav` from JSON file `ebook.json`, we can use the following command.
 
 ```bash
 python3 generate_ebook.py json audiobook ebook.json --output-file audiobook.wav
 ```
+
+| Flag | Description | Default value |
+| ---- | ----------- | ------------- |
+| `--output-file` | Output file destination. | `ebook.wav` |
+| `--tts-model` | Which text-to-speech model to use in order to generate the audiobook. For more information, check the [TTS library documentation](https://tts.readthedocs.io/en/latest/index.html). | `tts_models/en/vctk/vits` |
+| `--tts-speaker` | Which text-to-speech speaker to use in order to generate the audiobook. For more information, check the [TTS library documentation](https://tts.readthedocs.io/en/latest/index.html). | `p238` |
