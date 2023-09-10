@@ -4,9 +4,90 @@ A pipeline for generating ebooks from online sources.
 
 ## Installation
 
+To install, make sure that you are using at least **Python 3.6**, as the script relies on f-strings.
+
 ```
+# Clone the repository
 git clone https://github.com/drobilc/ebook-generator.git
-python -m venv venv
-.\venv\Scripts\activate
+
+cd ebook-generator
+
+# Install the project requirements
 pip install -r requirements.txt
 ```
+
+## Usage
+
+The Ebook generator currently supports the following sources:
+
+| Source name | Additional information |
+| --- | --- |
+| [FanFiction](https://www.fanfiction.net/) |  |
+| [Archive of Our Own](https://archiveofourown.org/) |  |
+| JSON |  |
+
+It can generate the following outputs:
+
+| Source name | Additional information |
+| --- | --- |
+| [epub file format](https://en.wikipedia.org/wiki/EPUB) |  |
+| JSON |  |
+
+### Standard usage
+
+To create an ebook, you need to specify both a source and an ebook generator. The source indicates where to fetch the story, while the ebook generator transforms the downloaded content into the desired output file format.
+
+Below is an example of how to download a story with the `<STORY_ID>` from the FanFiction website and convert it into an epub file called `ebook.epub`, which is compatible with most ebook readers. You can also set the destination file using the `--output-file` flag. If this flag is not used, the script, `generate_ebook.py`, will create a file named `book.epub`.
+
+```bash
+# Download a story from FanFiction, convert it to epub file format and save it as ebook.epub
+python3 generate_ebook.py fanfiction epub <STORY_ID> --output-file ebook.epub
+```
+To download a story from Archive of Our Own (AO3), you can use the following command. In this case, the generator will create an epub file named `book.epub` as the default output.
+
+```bash
+# Download a story from Archive of Our Own (AO3), convert it to epub file format and save it as book.epub (default value)
+python3 generate_ebook.py ao3 epub <STORY_ID>
+```
+
+### JSON
+
+At times, there may be a need to preserve a downloaded story in an intermediate format for potential future use in generating an output. In such cases, the JSON source and output option comes in handy. By designating it as the destination, the story will be fetched and preserved within a machine-readable JSON file. Later, when you intend to transform it into a finalized eBook, simply rerun the generator, specifying the JSON file as the input source. This way, you can conveniently generate eBooks from previously stored story data.
+
+```bash
+# Download a story from Archive of Our Own (AO3) and store it as JSON
+python3 generate_ebook.py ao3 json <STORY_ID> --output-file story.json
+
+# Read the downloaded JSON file and convert it into epub
+python3 generate_ebook.py json epub story.json --output-file ebook.epub
+```
+
+### Sources
+
+#### FanFiction source
+
+The FanFiction URL follows this structure: `https://www.fanfiction.net/s/<STORY_ID>/<CHAPTER>/<STORY_SLUG>`. In order to download a story, you must provide the `<STORY_ID>` argument to the ebook generator script.
+
+To download a story and create an ebook file named home_with_the_fairies.epub from the following URL `https://www.fanfiction.net/s/6024634/1/Home-with-the-Fairies``, use the following command:
+
+```bash
+python3 generate_ebook.py fanfiction epub 6024634 --output-file home_with_the_fairies.epub
+```
+
+##### Additional information
+
+The FanFiction website employs Cloudflare protection to identify and prevent bot access attempts. To get around this, the [undetected-chromedriver](https://pypi.org/project/undetected-chromedriver/2.1.1/) library is used. For it to work, Google Chrome and the Python Selenium library must be installed on the system. When downloading a story, a new visible chrome window will appear and we will be able to monitor the scraper getting the story. To maintain a low profile and avoid detection by Cloudflare's bot-detection mechanisms, we introduce a deliberate delay, which does slow down the scraper significantly.
+
+#### Archive of Our Own source
+
+The AO3 (Archive of Our Own) URL has the following structure: `https://archiveofourown.org/works/<STORY_ID>`. To download a story, you need to provide the `<STORY_ID>` argument to the ebook generator script.
+
+To download a work and generate an ebook file `ao3_304382.epub` from the following URL `https://archiveofourown.org/works/304382`, use the following command:
+
+```bash
+python3 generate_ebook.py ao3 epub 304382 --output-file ao3_304382.epub
+```
+
+### Destinations
+
+#### Epub file format destination
