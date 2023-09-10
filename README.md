@@ -1,6 +1,6 @@
-# Ebook generator
+# Bookbinder
 
-A pipeline for generating ebooks from online sources.
+*Bookbinder* is a user-friendly Python script created to effortlessly fetch stories from popular online platforms like Fanfiction, Archive of Our Own, and Wattpad and transform them into portable ebooks for convenient offline reading.
 
 ## Installation
 
@@ -8,9 +8,9 @@ To install, make sure that you are using at least **Python 3.6**, as the script 
 
 ```
 # Clone the repository
-git clone https://github.com/drobilc/ebook-generator.git
+git clone https://github.com/drobilc/bookbinder.git
 
-cd ebook-generator
+cd bookbinder
 
 # Install the project requirements
 pip install -r requirements.txt
@@ -18,20 +18,16 @@ pip install -r requirements.txt
 
 ## Usage
 
-The Ebook generator currently supports the following sources:
+Bookbinder currently supports the following sources:
 
-| Source name | Additional information |
-| --- | --- |
-| [FanFiction](https://www.fanfiction.net/) |  |
-| [Archive of Our Own](https://archiveofourown.org/) |  |
-| JSON |  |
+* [FanFiction](https://www.fanfiction.net/)
+* [Archive of Our Own](https://archiveofourown.org/)
+* JSON - intermediate representation for further processing
 
 It can generate the following outputs:
 
-| Source name | Additional information |
-| --- | --- |
-| [epub file format](https://en.wikipedia.org/wiki/EPUB) |  |
-| JSON |  |
+* [epub file format](https://en.wikipedia.org/wiki/EPUB)
+* JSON - intermediate representation for further processing
 
 ### Standard usage
 
@@ -52,7 +48,7 @@ python3 generate_ebook.py ao3 epub <STORY_ID>
 
 ### JSON
 
-At times, there may be a need to preserve a downloaded story in an intermediate format for potential future use in generating an output. In such cases, the JSON source and output option comes in handy. By designating it as the destination, the story will be fetched and preserved within a machine-readable JSON file. Later, when you intend to transform it into a finalized eBook, simply rerun the generator, specifying the JSON file as the input source. This way, you can conveniently generate eBooks from previously stored story data.
+At times, there may be a need to preserve a downloaded story in an intermediate format for potential future use in generating an output. In such cases, the JSON source and output option comes in handy. By designating it as the destination, the story will be fetched and preserved within a machine-readable JSON file. Later, when you intend to transform it into a finalized ebook, simply rerun the generator, specifying the JSON file as the input source. This way, you can conveniently generate ebooks from previously stored story data.
 
 ```bash
 # Download a story from Archive of Our Own (AO3) and store it as JSON
