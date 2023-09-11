@@ -1,4 +1,4 @@
-class Downloader(object):
+class Source(object):
     
     def add_arguments(self, parser):
         """

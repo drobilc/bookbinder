@@ -1,12 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
-from downloaders.downloader import Downloader
-from downloaders.ebook import Ebook, Chapter
+from sources.source import Source
+from sources.ebook import Ebook, Chapter
 import logging
 
-from downloaders.exceptions import *
+from sources.exceptions import *
 
-class ArchiveOfOurOwnDownloader(Downloader):
+class ArchiveOfOurOwnSource(Source):
     
     def add_arguments(self, parser):
         parser.add_argument("story_id")

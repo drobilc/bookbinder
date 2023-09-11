@@ -1,16 +1,10 @@
-import undetected_chromedriver as uc
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions
-from bs4 import BeautifulSoup
-from downloaders.downloader import Downloader
-from downloaders.ebook import Ebook, Chapter
+from sources.source import Source
+from sources.ebook import Ebook, Chapter
 import json
-import logging
 
-from downloaders.exceptions import *
+from sources.exceptions import *
 
-class JSONDownloader(Downloader):
+class JSONSource(Source):
     
     def add_arguments(self, parser):
         parser.add_argument(

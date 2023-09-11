@@ -1,5 +1,5 @@
 from ebooklib import epub
-from downloaders.ebook import Ebook, Chapter
+from sources.ebook import Ebook, Chapter
 import logging
 
 from generators.generator import Generator

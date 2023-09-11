@@ -1,5 +1,5 @@
 import argparse
-from downloaders import DOWNLOADERS
+from sources import SOURCES
 from generators import GENERATORS
 from transformations import TRANSFORMATIONS
 import logging
@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
     # Get the downloader and ebook generator types.
     parser = argparse.ArgumentParser()
-    parser.add_argument('downloader', choices=DOWNLOADERS.keys())
+    parser.add_argument('source', choices=SOURCES.keys())
     parser.add_argument('ebook_generator', choices=GENERATORS.keys())
     for transformation in TRANSFORMATIONS:
         parser.add_argument(
@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
     # Parse additional arguments for downloader.
     downloader_argument_parser = argparse.ArgumentParser()
-    downloader_class = DOWNLOADERS[arguments.downloader]
+    downloader_class = SOURCES[arguments.source]
     downloader_object = downloader_class()
     downloader_object.add_arguments(downloader_argument_parser)
     downloader_arguments, other_arguments = downloader_argument_parser.parse_known_args(other_arguments)
