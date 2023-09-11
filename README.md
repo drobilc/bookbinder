@@ -75,6 +75,11 @@ python3 generate_ebook.py fanfiction epub 6024634 --output-file home_with_the_fa
 
 The FanFiction website employs Cloudflare protection to identify and prevent bot access attempts. To get around this, the [undetected-chromedriver](https://pypi.org/project/undetected-chromedriver/2.1.1/) library is used. For it to work, Google Chrome and the Python Selenium library must be installed on the system. When downloading a story, a new visible chrome window will appear and we will be able to monitor the scraper getting the story. To maintain a low profile and avoid detection by Cloudflare's bot-detection mechanisms, we introduce a deliberate delay, which does slow down the scraper significantly.
 
+| Flag | Description | Default value |
+| ---- | ----------- | ------------- |
+| `--page-load-timeout` | How many seconds the downloader should wait for fanfiction.net server to respond. | `120` seconds |
+| `--wait-between-requests` | How many seconds the downloader should wait before downloading the next chapter. If this value is set too low, the Cloudfare DDOS protection might display captcha. | `5` seconds |
+
 #### Archive of Our Own source
 
 The AO3 (Archive of Our Own) URL has the following structure: `https://archiveofourown.org/works/<STORY_ID>`. To download a story, you need to provide the `<STORY_ID>` argument to the ebook generator script.
