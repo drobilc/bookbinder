@@ -4,7 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from bs4 import BeautifulSoup
 from sources.source import Source
-from sources.ebook import Ebook, Chapter
+from common.ebook import Ebook, Chapter
 import time
 import logging
 

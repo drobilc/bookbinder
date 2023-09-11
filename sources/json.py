@@ -1,5 +1,5 @@
 from sources.source import Source
-from sources.ebook import Ebook, Chapter
+from common.ebook import Ebook, Chapter
 import json
 
 from sources.exceptions import *

@@ -4,7 +4,7 @@ from TTS.api import TTS
 import tempfile
 from pathlib import Path
 from pydub import AudioSegment
-from sources.ebook import Ebook
+from common.ebook import Ebook
 
 from generators.generator import Generator
 

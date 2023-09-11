@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from sources.source import Source
-from sources.ebook import Ebook, Chapter
+from common.ebook import Ebook, Chapter
 import logging
 
 from sources.exceptions import *
