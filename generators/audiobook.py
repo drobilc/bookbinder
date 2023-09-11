@@ -26,7 +26,6 @@ class AudiobookGenerator(Generator):
 
         parser.add_argument(
             '--tts-speaker',
-            default='p238',
             dest="tts_speaker",
             help='Which text-to-speech speaker to use to generate audiobook.',
         )
@@ -39,7 +38,10 @@ class AudiobookGenerator(Generator):
     
     def generate_chapter(self, arguments, text, output_file):
         tts = TTS(arguments.tts_model)
-        tts.tts_to_file(text, speaker=arguments.tts_speaker, file_path=output_file)
+        if arguments.tts_speaker is not None:
+            tts.tts_to_file(text, speaker=arguments.tts_speaker, file_path=output_file)
+        else:
+            tts.tts_to_file(text, file_path=output_file)
 
     def generate(self, arguments, ebook: Ebook):
         logging.info(f'Audiobook generation started')

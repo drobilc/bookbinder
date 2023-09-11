@@ -115,4 +115,4 @@ python3 bookbinder.py json audiobook ebook.json --output-file audiobook.wav
 | `--output-directory` | The directory in which to save the generated audiobook chapters. | `audiobook` |
 | `--merge-to-file` | If set, all the chapters will be combined into a single file at this location. |  |
 | `--tts-model` | Which text-to-speech model to use in order to generate the audiobook. For more information, check the [TTS library documentation](https://tts.readthedocs.io/en/latest/index.html). | `tts_models/en/vctk/vits` |
-| `--tts-speaker` | Which text-to-speech speaker to use in order to generate the audiobook. For more information, check the [TTS library documentation](https://tts.readthedocs.io/en/latest/index.html). | `p238` |
+| `--tts-speaker` | Which text-to-speech speaker to use in order to generate the audiobook. For more information, check the [TTS library documentation](https://tts.readthedocs.io/en/latest/index.html). | |
