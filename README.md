@@ -34,17 +34,17 @@ It can generate the following outputs:
 
 To create an ebook, you need to specify both a source and an ebook generator. The source indicates where to fetch the story, while the ebook generator transforms the downloaded content into the desired output file format.
 
-Below is an example of how to download a story with the `<STORY_ID>` from the FanFiction website and convert it into an epub file called `ebook.epub`, which is compatible with most ebook readers. You can also set the destination file using the `--output-file` flag. If this flag is not used, the script, `generate_ebook.py`, will create a file named `book.epub`.
+Below is an example of how to download a story with the `<STORY_ID>` from the FanFiction website and convert it into an epub file called `ebook.epub`, which is compatible with most ebook readers. You can also set the destination file using the `--output-file` flag. If this flag is not used, the script, `bookbinder.py`, will create a file named `book.epub`.
 
 ```bash
 # Download a story from FanFiction, convert it to epub file format and save it as ebook.epub
-python3 generate_ebook.py fanfiction epub <STORY_ID> --output-file ebook.epub
+python3 bookbinder.py fanfiction epub <STORY_ID> --output-file ebook.epub
 ```
 To download a story from Archive of Our Own (AO3), you can use the following command. In this case, the generator will create an epub file named `book.epub` as the default output.
 
 ```bash
 # Download a story from Archive of Our Own (AO3), convert it to epub file format and save it as book.epub (default value)
-python3 generate_ebook.py ao3 epub <STORY_ID>
+python3 bookbinder.py ao3 epub <STORY_ID>
 ```
 
 ### JSON
@@ -53,10 +53,10 @@ At times, there may be a need to preserve a downloaded story in an intermediate 
 
 ```bash
 # Download a story from Archive of Our Own (AO3) and store it as JSON
-python3 generate_ebook.py ao3 json <STORY_ID> --output-file story.json
+python3 bookbinder.py ao3 json <STORY_ID> --output-file story.json
 
 # Read the downloaded JSON file and convert it into epub
-python3 generate_ebook.py json epub story.json --output-file ebook.epub
+python3 bookbinder.py json epub story.json --output-file ebook.epub
 ```
 
 ### Sources
@@ -68,7 +68,7 @@ The FanFiction URL follows this structure: `https://www.fanfiction.net/s/<STORY_
 To download a story and create an ebook file named home_with_the_fairies.epub from the following URL `https://www.fanfiction.net/s/6024634/1/Home-with-the-Fairies``, use the following command:
 
 ```bash
-python3 generate_ebook.py fanfiction epub 6024634 --output-file home_with_the_fairies.epub
+python3 bookbinder.py fanfiction epub 6024634 --output-file home_with_the_fairies.epub
 ```
 
 ##### Additional information
@@ -87,7 +87,7 @@ The AO3 (Archive of Our Own) URL has the following structure: `https://archiveof
 To download a work and generate an ebook file `ao3_304382.epub` from the following URL `https://archiveofourown.org/works/304382`, use the following command:
 
 ```bash
-python3 generate_ebook.py ao3 epub 304382 --output-file ao3_304382.epub
+python3 bookbinder.py ao3 epub 304382 --output-file ao3_304382.epub
 ```
 
 ### Destinations
@@ -107,7 +107,7 @@ Bookbinder is able to create an audiobook using the [TTS](https://pypi.org/proje
 To create an audiobook `audiobook.wav` from JSON file `ebook.json`, we can use the following command.
 
 ```bash
-python3 generate_ebook.py json audiobook ebook.json --output-file audiobook.wav
+python3 bookbinder.py json audiobook ebook.json --output-file audiobook.wav
 ```
 
 | Flag | Description | Default value |
