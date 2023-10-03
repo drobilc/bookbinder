@@ -79,8 +79,14 @@ class FanfictionSource(Source):
         
         # Get the title of the current chapter
         chapter_selector = html.find('select', {'id': 'chap_select'})
-        selected_chapter = chapter_selector.find('option', selected=True)
-        chapter_title = selected_chapter.get_text().strip()
+
+        # If there is no [chapter_selector], then the story only has one
+        # chapter.
+        if chapter_selector is not None:
+            selected_chapter = chapter_selector.find('option', selected=True)
+            chapter_title = selected_chapter.get_text().strip()
+        else:
+            chapter_title = 'First chapter'
         
         return Chapter(
             title=chapter_title,
